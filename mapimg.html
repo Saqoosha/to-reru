@@ -1,0 +1,49 @@
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<script type="text/javascript" src="http://maps.google.co.jp/maps/api/js?sensor=false&hl=ja"></script>
+<script type="text/javascript">
+var auau = false;
+function initialize(lat, lng) {
+	console.log([lat, lng]);
+	var initPos = new google.maps.LatLng(lat, lng);
+	var myOptions = {
+		noClear : true,
+		center : initPos,
+		zoom : 15,
+		mapTypeId : google.maps.MapTypeId.ROADMAP,
+		streetViewControl: false,
+		navigationControl: false,
+		mapTypeControl: false,
+		scaleControl: false,
+		scrollwheel: false,
+		draggable: false
+	};
+	var map_canvas = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	var precision = 5;
+	var radius = 1;
+	//var kmlUrl = ["http://jisinroutemap.appspot.com/5/4/140/38.111889";
+	var kmlUrl = ["http://jisinroutemap.appspot.com", precision, radius, lng, lat].join("/");
+	console.log(kmlUrl);
+	var kmlLayer = new google.maps.KmlLayer(kmlUrl, {preserveViewport:true});
+	kmlLayer.setMap(map_canvas);
+	google.maps.event.addListenerOnce(kmlLayer, "defaultviewport_changed",  function() {
+		auau = true;
+	});
+}
+</script>
+<style type="text/css" media="screen">
+	* {
+		margin: 0;
+		padding: 0;
+	}
+	#map_canvas {
+		width: 200px;
+		height: 200px;
+	}
+</style>
+</head>
+<body>
+  <div id="map_canvas"></div>
+</body>
+</html>
