@@ -8,7 +8,7 @@ switch (phantom.state) {
 			console.log([window.auau, wait]);
 			if (window.auau) {
 				clearInterval(id);
-				var count = 5;
+				var count = 10;
 				id = setInterval(function () {
 					if (--count == 0) {
 						phantom.render(phantom.args[2]);

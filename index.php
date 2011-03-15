@@ -5,7 +5,7 @@ header('Content-type: text/html; charset=Shift_JIS');
 
 if (isset($_GET['address'])) {
 	$req = 'http://maps.google.com/maps/api/geocode/xml';
-	$req .= '?address='.urlencode($_GET['address']);
+	$req .= '?address='.urlencode(mb_convert_encoding($_GET['address'], 'UTF-8', 'SJIS'));
 	$req .= '&sensor=false';
 	$xml = simplexml_load_file($req) or die('XML parsing error');
 	if ($xml->status == 'OK') {
@@ -19,10 +19,10 @@ if (isset($_GET['address'])) {
 }
 
 if($lat == ""){
-  $lat = "38.259638";
+  $lat = "38.2596";
 }
 if($lng == ""){
-  $lng = "140.879902";
+  $lng = "140.8799";
 }
 
 
@@ -54,12 +54,12 @@ $mailto = "mailto:?body=" . urlencode($url);
   array("x"=>"ˆÚ“®Œã‚ÌŒo“x","y"=>"ˆÚ“®Œã‚ÌˆÜ“x");
 */
 function adjust($x,$y,$deltaX,$deltaY,$z){
-  $offset=268435456;
-  $radius=$offset / pi();
-  $xy = array(  "x"=>((round(round($offset + $radius * $x * pi()/180)+($deltaX << (21-$z))) - $offset) / $radius) * 180 / pi(),
-                "y"=>(pi() / 2 - 2 * atan(exp((round(round($offset - $radius * log((1 + sin($y * pi() / 180))/(1 - sin($y * pi() / 180))) / 2)+($deltaY << (21-$z))) - $offset) / $radius))) * 180 / pi()
-              );
-  return $xy;
+	$offset = 268435456;
+	$radius = $offset / pi();
+	$x = ((round(round($offset + $radius * $x * pi()/180)+($deltaX << (21-$z))) - $offset) / $radius) * 180 / pi();
+	$y = (pi() / 2 - 2 * atan(exp((round(round($offset - $radius * log((1 + sin($y * pi() / 180))/(1 - sin($y * pi() / 180))) / 2)+($deltaY << (21-$z))) - $offset) / $radius))) * 180 / pi();
+	$xy = array("x" => round($x * 10000) / 10000, "y" => round($y * 10000) / 10000);
+	return $xy;
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -72,7 +72,7 @@ function adjust($x,$y,$deltaX,$deltaY,$z){
 </head>
 <body>
 <center>
-	<form action="smap2.php" method="get" accept-charset="utf-8">
+	<form action="index.php" method="get">
 		<input type="text" name="address"></input>
 		<input type="submit" value="ŒŸõ">
 	</form>

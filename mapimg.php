@@ -1,5 +1,4 @@
 <?php
-header('Content-type: image/png');
 ini_set('display_errors', 'Off');
 
 $lat = $_GET["lat"];
@@ -17,8 +16,11 @@ $png = tempnam('img', 'hoge') . '.gif';
 $cmd = implode(' ', array('/usr/local/bin/phantomjs', 'mapimg.js', $lat, $lng, $png));
 exec($cmd, $out, $ret);
 if ($ret) {
+	header('HTTP/1.0 500 auau');
+	header('Content-type: image/png');
 	readfile('auau.gif');
 } else {
+	header('Content-type: image/png');
 	readfile($png);
 }
 unlink($png);
